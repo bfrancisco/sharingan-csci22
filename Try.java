@@ -7,8 +7,9 @@ public class Try extends JPanel {
     double width = 1024;
     double height = 768;
     public Try() {
-        double l = 500, w = 500;
-        rectangle = new Rectangle2D.Double((width/2) -(w/2), (height/2) - (l/2), w, l);
+        double x = 500, y = 500;
+        rectangle = new Rectangle2D.Double((width/2) - (x/2), (height/2) - (y/2), x, y);
+        
     }
 
     public void paint(Graphics g) {

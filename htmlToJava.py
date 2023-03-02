@@ -36,15 +36,15 @@ while (s != 'e'):
 
     for v in vals[:-1]:
         if xy == 0:
-            ret += "x+scale*" + v + ', '
+            ret += "x+scale*(" + v + '), '
         else:
-            ret += "y+scale*" + v + ', '
+            ret += "y+scale*(" + v + '), '
         xy = 1 - xy
 
     if xy == 0:
-        ret += "x+scale*" + vals[-1]
+        ret += "x+scale*(" + vals[-1] + ')'
     else:
-        ret += "y+scale*" + vals[-1]
+        ret += "y+scale*(" + vals[-1] + ')'
 
     ret += ');'
     a.append(ret)

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SceneCanvas extends JComponent {
     private int width;
     private int height;
-    ArrayList<DrawingObject> drawingObjects; // <-- This
+    ArrayList<DrawingObject> drawingObjects;
     ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
     ShapeColor shapeColor;
@@ -31,10 +31,13 @@ public class SceneCanvas extends JComponent {
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
+        drawingObjects.add(new Tomoe(width/2, height/2, 1, shapeColor.genColor("Tomoe"), 0, 0, 137));
+        drawingObjects.add(new Tomoe(width/2, height/2, 1, shapeColor.genColor("Tomoe"), 120, 0, 137));
+        drawingObjects.add(new Tomoe(width/2, height/2, 1, shapeColor.genColor("Tomoe"), 240, 0, 137));
     }
 
     private void setUpSharingans(){
-        sharinganList.add(new Tomoe(width/2, height/2, 1, shapeColor.genColor("Tomoe"), 0));
+        
     }
 
     @Override
@@ -50,7 +53,7 @@ public class SceneCanvas extends JComponent {
         }
         
         // Draw current sharingan given sharinganIndex
-        sharinganList.get(sharinganIndex).draw(g2d, af);
+        // sharinganList.get(sharinganIndex).draw(g2d, af);
 
     }
 }

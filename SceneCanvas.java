@@ -21,7 +21,7 @@ public class SceneCanvas extends JComponent {
         shapeColor = new ShapeColor();
 
         drawingObjects = new ArrayList<DrawingObject>();
-        setUpBG("BG1", "BG2");
+        setUpBG("Primary", "Secondary");
         
         sharinganList = new ArrayList<DrawingObject>();
         setUpSharingans();
@@ -37,7 +37,7 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpSharingans(){
-        
+        sharinganList.add(new TomoeSharingan(width/2, height/2, 1, 475, 0, 0, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SceneCanvas extends JComponent {
         }
         
         // Draw current sharingan given sharinganIndex
-        // sharinganList.get(sharinganIndex).draw(g2d, af);
+        sharinganList.get(sharinganIndex).draw(g2d, af);
 
     }
 }

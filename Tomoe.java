@@ -2,12 +2,11 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Tomoe extends DrawingObject{
-    private double scale;
     private Color fillColor;
     Path2D.Double tomoe;
 
     public Tomoe(double x, double y, double s, Color c, double r, double tx, double ty){
-        super(x, y, r, tx, ty);
+        super(x, y, r, s, tx, ty);
         scale = s;
         fillColor = c;
         tomoe = new Path2D.Double();

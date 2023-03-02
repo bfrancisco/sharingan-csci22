@@ -1,7 +1,22 @@
 import java.awt.*;
 import java.awt.geom.*;
 
-public interface DrawingObject {
-    void draw(Graphics2D g2d, AffineTransform reset);
+public abstract class DrawingObject {
+    protected double x;
+    protected double y;
+    protected double rotation;
+    
+    public DrawingObject(){}
+    public DrawingObject(double x, double y){
+        this.x = x;
+        this.y = y;
+    }
+    public DrawingObject(double x, double y, double r){
+        this.x = x;
+        this.y = y;
+        rotation = r;
+    }
+
+    abstract void draw(Graphics2D g2d, AffineTransform reset);
     // can add animate method
 }

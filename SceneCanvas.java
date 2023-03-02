@@ -8,19 +8,33 @@ import java.util.ArrayList;
 public class SceneCanvas extends JComponent {
     private int width;
     private int height;
-    ArrayList<DrawingObject> Sharingans;
+    ArrayList<DrawingObject> drawingObjects; // <-- This
+    ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
+    ShapeColor shapeColor;
 
     public SceneCanvas(int w, int h){
         width = w;
         height = h;
         setPreferredSize(new Dimension(width, height));
 
-        Sharingans = new ArrayList<DrawingObject>();
+        shapeColor = new ShapeColor();
+
+        drawingObjects = new ArrayList<DrawingObject>();
+        setUpBG("BG1", "BG2");
+        
+        sharinganList = new ArrayList<DrawingObject>();
+        setUpSharingans();
         sharinganIndex = 0;
 
-        Sharingans.add(new Tomoe((double)w/2, (double)h/2, 50)); // testing, will delete
+    }
 
+    private void setUpBG(String s1, String s2){
+        drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
+    }
+
+    private void setUpSharingans(){
+        sharinganList.add(new Tomoe(width/2, height/2, 1, shapeColor.genColor("Tomoe"), 0));
     }
 
     @Override
@@ -30,15 +44,13 @@ public class SceneCanvas extends JComponent {
         g2d.setRenderingHints(rh);
         AffineTransform af = g2d.getTransform();
 
-        // background
-        Color backgroundColor = Color.GRAY;
-        Rectangle2D.Double background = new Rectangle2D.Double(0,0,width,height);
-        g2d.setColor(backgroundColor);
-        g2d.fill(background);
-
+        // draw all drawing objects
+        for (DrawingObject obj : drawingObjects){
+            obj.draw(g2d, af);
+        }
         
         // Draw current sharingan given sharinganIndex
-        Sharingans.get(sharinganIndex).draw(g2d, af);
+        sharinganList.get(sharinganIndex).draw(g2d, af);
 
     }
 }

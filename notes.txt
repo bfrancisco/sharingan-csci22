@@ -1,0 +1,14 @@
+Components
+ - Tomoe
+    - SVG generated
+    - can rotate
+    - can revolve
+ - Pupil
+    - circle / custom
+    - can scale
+    - can revolve
+    - follows mouse
+ - Outer Circle
+    - black circle
+ - Outlined Circle
+    - black outlined circle

@@ -15,7 +15,7 @@ public class SceneFrame {
     }
 
     public void setUpGUI(){
-        frame.setSize(width, height);
+        // frame.setSize(width, height);
         Container contentPane = frame.getContentPane();
         
         // format GUI here

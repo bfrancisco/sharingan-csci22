@@ -27,8 +27,8 @@ public class TomoeSharingan extends DrawingObject{
         outerCircle.draw(g2d, reset);
         innerCircle.draw(g2d, reset);
         outlineCircle.draw(g2d, reset);
-        pupil.draw(g2d, reset);
-        for (int i = 0; i < 3; i++)
+        // pupil.draw(g2d, reset);
+        for (int i = 0; i < 1; i++)
             tomoe[i].draw(g2d, reset);
         highlight.draw(g2d, reset);
         shadowCircleClip.clip(g2d, reset);

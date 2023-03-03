@@ -6,7 +6,6 @@
 # very ugly code. i know.
 
 a = []
-
 s = input().strip()
 path = "tomoe"
 while (s != 'e'):

@@ -27,7 +27,7 @@ public class Circle extends DrawingObject{
         this.solidColor = c;
         isGradient = false;
         isFill = isfill;
-        circle = new Ellipse2D.Double(this.x-radius/2, this.y-radius/2, radius*scale, radius*scale);
+        circle = new Ellipse2D.Double(this.x-radius*scale/2, this.y-radius*scale/2, radius*scale, radius*scale);
     }
 
     public Circle(double x, double y, double r, double s, Color g1, Color g2){
@@ -48,7 +48,7 @@ public class Circle extends DrawingObject{
         colors[2] = g1;
         colors[3] = g2;
         gradient = new RadialGradientPaint(center, (float) radius/2, fractions, colors);
-        circle = new Ellipse2D.Double(this.x-radius/2, this.y-radius/2, radius*scale, radius*scale);
+        circle = new Ellipse2D.Double(this.x-radius*scale/2, this.y-radius*scale/2, radius*scale, radius*scale);
     }
 
     public void draw(Graphics2D g2d, AffineTransform reset){

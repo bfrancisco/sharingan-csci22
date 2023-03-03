@@ -16,7 +16,6 @@ public class SceneCanvas extends JComponent {
     public SceneCanvas(int w, int h){
         width = w;
         height = h;
-        setPreferredSize(new Dimension(width, height));
         shapeColor = new ShapeColor();
 
         drawingObjects = new ArrayList<DrawingObject>();

@@ -31,8 +31,8 @@ public class Tomoe extends DrawingObject{
         double cy = tomoe.getBounds2D().getCenterY() - y;
         g2d.translate(-cx, -cy);
         
-        //apply translation
-        // g2d.translate(-tx, -ty);
+        // apply translation
+        g2d.translate(-tx, -ty);
 
         // rotate from center of object
         g2d.rotate(Math.toRadians(rotation), 

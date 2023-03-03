@@ -19,7 +19,7 @@ public class TomoeSharingan extends DrawingObject{
         tomoe = new Tomoe[3];
         for (int i = 0; i < 3; i++)
             tomoe[i] = new Tomoe(x, y, radius/475.0f, tomoeC, (double)(i * 120.0f), 0, radius*0.29f); // 0.29f on PC
-        highlight = new Ellipse(x, y, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 50), 0, radius*0.20f*1.35f);
+        highlight = new Ellipse(x, y, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 50), 0, 128.25);
         shadowCircleClip = new Circle(x, y, radius * 0.95f, scale, new Color(0, 0, 0, 45), new Color(0, 0, 0, 95));
     }
 

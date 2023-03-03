@@ -78,5 +78,6 @@ public class Circle extends DrawingObject{
         g2d.setPaint(gradient);
         g2d.setClip(out);
         g2d.fill(circle);
+        g2d.setTransform(reset);
     }
 }

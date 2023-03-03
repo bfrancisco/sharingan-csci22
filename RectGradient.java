@@ -26,5 +26,6 @@ public class RectGradient extends DrawingObject{
     public void draw(Graphics2D g2d, AffineTransform reset){
         g2d.setPaint(gradient);
         g2d.fill(rect);
+        g2d.setTransform(reset);
     }
 }

@@ -25,6 +25,7 @@ public class Tomoe extends DrawingObject{
         tomoe.closePath();
     }
 
+
     public void draw(Graphics2D g2d, AffineTransform reset){
         //align to center
         double cx = tomoe.getBounds2D().getCenterX() - x;

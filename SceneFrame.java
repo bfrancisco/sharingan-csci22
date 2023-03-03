@@ -22,9 +22,8 @@ public class SceneFrame {
         contentPane.add(sceneCanvas, BorderLayout.CENTER);
 
         frame.setTitle(" Midterm Project - Francisco, James Bryan - 222677");
-        // frame.getContentPane().setPreferredSize(new Dimension(width, height));
-        // frame.pack();
-        frame.setSize(1024, 768);
+        frame.getContentPane().setPreferredSize(new Dimension(width, height));
+        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }

@@ -31,7 +31,7 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpSharingans(){
-        sharinganList.add(new TomoeSharingan(width/2, height/2, 1, 475, 0, 0, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
+        sharinganList.add(new TomoeSharingan(width/2, height/2, 1, height * 0.6185f, 0, 0, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
     }
 
     @Override

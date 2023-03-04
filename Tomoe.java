@@ -9,6 +9,10 @@ public class Tomoe extends DrawingObject{
         super(x, y, r, s, tx, ty);
         scale = s;
         fillColor = c;
+        generate();
+    }
+
+    public void generate(){
         tomoe = new Path2D.Double();
         tomoe.moveTo(x+scale*(79.250000), y+scale*(12.750000));
         tomoe.curveTo(x+scale*(67.973205), y+scale*(11.445636), x+scale*(56.547433), y+scale*(12.696558), x+scale*(45.820000), y+scale*(16.410000));
@@ -25,8 +29,14 @@ public class Tomoe extends DrawingObject{
         tomoe.closePath();
     }
 
+    public void addRotate(double inc){
+        rotation += inc;
+        if (rotation >= 360.00f) rotation -= 360.00f;
+    }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
+        System.out.println(rotation);
+
         //align to center
         double cx = tomoe.getBounds2D().getCenterX() - x;
         double cy = tomoe.getBounds2D().getCenterY() - y;

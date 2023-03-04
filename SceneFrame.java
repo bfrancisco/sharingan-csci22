@@ -31,13 +31,13 @@ public class SceneFrame {
 
         frame.getRootPane().addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                // This is only called when the user releases the mouse button.
+                // This is only called when the user releases the mouse button after dragging the window.
                 // https://stackoverflow.com/questions/2106367/listen-to-jframe-resize-events-as-the-user-drags-their-mouse
                 // https://stackoverflow.com/questions/13800180/reset-jcomponent-to-default-value
 
                 contentPane.remove(0);
                 contentPane.add(new SceneCanvas(frame.getWidth(), frame.getHeight()));
-                System.out.println("componentResized");
+                // System.out.println("componentResized");
             }
         });
     }

@@ -39,7 +39,7 @@ public class Circle extends DrawingObject{
         center = new Point2D.Double(x-tx, y-ty);
         fractions = new float[4];
         fractions[0] = 0.0f;
-        fractions[1] = 0.35f;
+        fractions[1] = 0.35f; 
         fractions[2] = 0.80f;
         fractions[3] = 1.0f;
         colors = new Color[4];
@@ -68,7 +68,7 @@ public class Circle extends DrawingObject{
     }
 
     public void clip(Graphics2D g2d, AffineTransform reset){
-        // reverse setClip
+        // reverse setClip. Create Area of whole canvas -> subtract wanted area -> setclip -> voila
         // https://stackoverflow.com/questions/1241253/inside-clipping-with-java-graphics
         
         Ellipse2D circle2 = new Ellipse2D.Double(this.x-radius/2 -(radius * 0.20f), this.y-radius/2 -(radius * 0.20f), radius*scale, radius*scale);

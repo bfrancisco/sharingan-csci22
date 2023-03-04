@@ -9,7 +9,11 @@ public class TomoeSharingan extends DrawingObject{
     private double tx;
     private double ty;
     protected boolean canMove = true;
+    
+    private int tomoeSpeed;
+    // private int tomoeSpeedVal = 0;
 
+    private int[] tomoeRotVals;
     private Circle outerCircle;
     private Circle innerCircle;
     private Circle outlineCircle;
@@ -18,12 +22,19 @@ public class TomoeSharingan extends DrawingObject{
     private Ellipse highlight;
     private Circle shadowCircleClip;
 
-    public TomoeSharingan(double x, double y, double scale, double radius, Color tomoeC, Color primary, Color primaryDark){
+    public TomoeSharingan(double x, double y, double scale, double radius, Color tomoeC, Color primary, Color primaryDark, int tspeed){
         super(x, y, scale);
         this.radius = radius;
         this.tomoeC = tomoeC;
         this.primary = primary;
         this.primaryDark = primaryDark;
+        tomoeRotVals = new int[3];
+        tomoeSpeed = tspeed;
+        tomoeRotVals[0] = tomoeSpeed;
+        tomoeRotVals[1] = tomoeSpeed;
+        tomoeRotVals[2] = tomoeSpeed;
+       
+        generateComponents();
     }
 
     public void getEyeDisplacement(double ex, double ey){
@@ -45,10 +56,22 @@ public class TomoeSharingan extends DrawingObject{
         pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f, scale, tomoeC, true);
         tomoe = new Tomoe[3];
         for (int i = 0; i < 3; i++)
-            tomoe[i] = new Tomoe(x-tx, y-ty, radius/475.0f, tomoeC, (double)(i * 120.0f), 0, radius*0.29f); // 0.29f on PC
-        highlight = new Ellipse(x, y, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 50), 0, radius*0.20f*1.35f);
-        shadowCircleClip = new Circle(x, y, radius * 0.95f, scale, new Color(0, 0, 0, 45), new Color(0, 0, 0, 95), tx, ty);
+            tomoe[i] = new Tomoe(x-tx, y-ty, radius/475.0f, tomoeC, (double)(i * 120.0f - ((double) tomoeRotVals[i] / 2)), 0, radius*0.29f); // 0.29f on PC
+        highlight = new Ellipse(x-tx*0.2, y-ty*0.2, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 30), new Color(255, 255, 255), 0, radius*0.20f*1.35f, radius);
+        shadowCircleClip = new Circle(x, y, radius * 0.95f, scale, new Color(0, 0, 0, 30), new Color(0, 0, 0, 95), tx, ty);
+
+        // tomoeSpeedVal = (tomoeSpeedVal + tomoeSpeed) % 360;
     }
+
+    public void animateTomoe(){
+        for (int i = 0; i < 3; i++){
+            tomoeRotVals[i] = (tomoeRotVals[i] + tomoeSpeed) % 720;
+        }
+    }
+
+    // public void setTomoeSpeed(int val){
+    //     tomoeSpeed = val;
+    // }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
         generateComponents();

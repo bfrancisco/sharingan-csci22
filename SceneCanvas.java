@@ -14,6 +14,10 @@ public class SceneCanvas extends JComponent {
     private double eyeRadius;
     private double boxWidth;
     private double eyeMoveThreshold;
+
+    private int tomoeSpeed;
+    private Timer tomoeTimer;
+
     ArrayList<DrawingObject> drawingObjects;
     ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
@@ -32,6 +36,7 @@ public class SceneCanvas extends JComponent {
         eyeMoveThreshold = eyeRadius * 0.06f;
         boxWidth = Math.min(width, height);
         shapeColor = new ShapeColor();
+        tomoeSpeed = 1;
 
         drawingObjects = new ArrayList<DrawingObject>();
         setUpBG("Primary", "Secondary");
@@ -48,7 +53,7 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpSharingans(){
-        sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
+        sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), tomoeSpeed));
     }
 
     private void setUpListeners(){
@@ -77,6 +82,19 @@ public class SceneCanvas extends JComponent {
             public void mouseDragged(MouseEvent e) {}
         };
         this.addMouseMotionListener(mouseLoc);
+
+        ActionListener tomoeAnimator = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent ae)
+			{
+				((TomoeSharingan) sharinganList.get(sharinganIndex)).animateTomoe();
+                repaint();
+			}
+		};
+        tomoeTimer = new Timer(10, tomoeAnimator);
+        tomoeTimer.setRepeats(true);
+        tomoeTimer.start();
     }
 
     @Override

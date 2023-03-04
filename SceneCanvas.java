@@ -11,7 +11,7 @@ public class SceneCanvas extends JComponent {
     private int height;
     private double centerX;
     private double centerY;
-    private double eyeRadius;
+    private double eyeRadius; 
     private double boxWidth;
     private double eyeMoveThreshold;
 
@@ -26,6 +26,7 @@ public class SceneCanvas extends JComponent {
     public SceneCanvas(int w, int h){
         width = w;
         height = h;
+        this.setPreferredSize(new Dimension(width, height));
         startCanvas();
     }
 
@@ -50,6 +51,7 @@ public class SceneCanvas extends JComponent {
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
+        drawingObjects.add(new SpeedGraphic(width*0.98, height*0.985, eyeRadius*0.045, eyeRadius));
     }
 
     private void setUpSharingans(){
@@ -57,7 +59,7 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpListeners(){
-        MouseMotionListener mouseLoc = new MouseMotionListener() {
+        MouseMotionListener mouseLoc = new MouseMotionListener(){
             @Override
             public void mouseMoved(MouseEvent m){
                 double mx = m.getX();
@@ -83,8 +85,7 @@ public class SceneCanvas extends JComponent {
         };
         this.addMouseMotionListener(mouseLoc);
 
-        ActionListener tomoeAnimator = new ActionListener()
-		{
+        ActionListener tomoeAnimator = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
@@ -96,18 +97,17 @@ public class SceneCanvas extends JComponent {
         tomoeTimer.setRepeats(true);
         tomoeTimer.start();
 
-        MouseWheelListener wheelListener = new MouseWheelListener() {
-
+        MouseWheelListener wheelListener = new MouseWheelListener(){
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = -(e.getWheelRotation());
                 if (rotationSpeed + notches > 0 && rotationSpeed + notches <= 10){
                     rotationSpeed += notches;
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
+                    ((SpeedGraphic) drawingObjects.get(1)).setSpeed(rotationSpeed);
+                    repaint();
                 }
-                
             }
-            
         };
         this.addMouseWheelListener(wheelListener);
     }

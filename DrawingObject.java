@@ -48,5 +48,5 @@ public abstract class DrawingObject {
     }
 
     abstract void draw(Graphics2D g2d, AffineTransform reset);
-    // can add animate method
+    
 }

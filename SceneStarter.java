@@ -6,6 +6,10 @@ public class SceneStarter {
     System.setProperty( "sun.java2d.uiScale", "1.0" );
     SceneFrame scene = new SceneFrame(1024, 768);
     scene.setUpGUI();
+
+    // instructions
+    System.out.println("Use Mouse Wheel to adjust rotation speed.");
+    System.out.println("[SECRET FEATURE] Try to make Sasuke's Mangekyou Sharingan!");
   }
 
 }

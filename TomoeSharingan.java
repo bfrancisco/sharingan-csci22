@@ -50,15 +50,15 @@ public class TomoeSharingan extends DrawingObject{
 
     public void generateComponents(){
         // System.out.printf("%.2f , %.2f\n", tx, ty);
-        outerCircle = new Circle(x, y, radius, scale, tomoeC, true);
-        innerCircle = new Circle(x, y, radius * 0.95f, scale, primary, primaryDark, tx, ty);
+        outerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius, scale, tomoeC, true);
+        innerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, primary, primaryDark, tx, ty);
         outlineCircle = new Circle(x-tx, y-ty, radius * 0.54f, scale, tomoeC, false);
         pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f, scale, tomoeC, true);
         tomoe = new Tomoe[3];
         for (int i = 0; i < 3; i++)
             tomoe[i] = new Tomoe(x-tx, y-ty, radius/475.0f, tomoeC, (double)(i * 120.0f - ((double) tomoeRotVals[i] / 2)), 0, radius*0.29f); // 0.29f on PC
-        highlight = new Ellipse(x-tx*0.2, y-ty*0.2, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 30), new Color(255, 255, 255), 0, radius*0.20f*1.35f, radius);
-        shadowCircleClip = new Circle(x, y, radius * 0.95f, scale, new Color(0, 0, 0, 30), new Color(0, 0, 0, 95), tx, ty);
+        highlight = new Ellipse(x-tx*0.4, y-ty*0.4, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 30), new Color(255, 255, 255), 0, radius*0.20f*1.35f, radius);
+        shadowCircleClip = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, new Color(0, 0, 0, 30), new Color(0, 0, 0, 95), tx, ty);
 
         // tomoeSpeedVal = (tomoeSpeedVal + tomoeSpeed) % 360;
     }

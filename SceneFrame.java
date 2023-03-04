@@ -13,9 +13,7 @@ public class SceneFrame {
         width = w;
         height = h;
         sceneCanvas = new SceneCanvas(width, height);
-        
     }
-
 
     public void setUpGUI(){
         Container contentPane = frame.getContentPane();
@@ -37,9 +35,7 @@ public class SceneFrame {
 
                 contentPane.remove(0);
                 contentPane.add(new SceneCanvas(frame.getWidth(), frame.getHeight()));
-                // System.out.println("componentResized");
             }
         });
     }
-
 }   

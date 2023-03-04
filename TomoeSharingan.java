@@ -69,9 +69,9 @@ public class TomoeSharingan extends DrawingObject{
         }
     }
 
-    // public void setTomoeSpeed(int val){
-    //     tomoeSpeed = val;
-    // }
+    public void setRotationSpeed(int val){
+        tomoeSpeed = val;
+    }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
         generateComponents();

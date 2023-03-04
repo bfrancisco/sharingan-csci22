@@ -15,7 +15,7 @@ public class SceneCanvas extends JComponent {
     private double boxWidth;
     private double eyeMoveThreshold;
 
-    private int tomoeSpeed;
+    private int rotationSpeed;
     private Timer tomoeTimer;
 
     ArrayList<DrawingObject> drawingObjects;
@@ -33,10 +33,10 @@ public class SceneCanvas extends JComponent {
         centerX = width / 2;
         centerY = height / 2;
         eyeRadius = height * 0.6185f;
-        eyeMoveThreshold = eyeRadius * 0.06f;
+        eyeMoveThreshold = eyeRadius * 0.06f; 
         boxWidth = Math.min(width, height);
         shapeColor = new ShapeColor();
-        tomoeSpeed = 1;
+        rotationSpeed = 1;
 
         drawingObjects = new ArrayList<DrawingObject>();
         setUpBG("Primary", "Secondary");
@@ -53,7 +53,7 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpSharingans(){
-        sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), tomoeSpeed));
+        sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed));
     }
 
     private void setUpListeners(){
@@ -95,6 +95,21 @@ public class SceneCanvas extends JComponent {
         tomoeTimer = new Timer(10, tomoeAnimator);
         tomoeTimer.setRepeats(true);
         tomoeTimer.start();
+
+        MouseWheelListener wheelListener = new MouseWheelListener() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int notches = -(e.getWheelRotation());
+                if (rotationSpeed + notches > 0 && rotationSpeed + notches <= 10){
+                    rotationSpeed += notches;
+                    ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
+                }
+                
+            }
+            
+        };
+        this.addMouseWheelListener(wheelListener);
     }
 
     @Override

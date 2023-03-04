@@ -35,8 +35,6 @@ public class Tomoe extends DrawingObject{
     }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
-        System.out.println(rotation);
-
         //align to center
         double cx = tomoe.getBounds2D().getCenterX() - x;
         double cy = tomoe.getBounds2D().getCenterY() - y;

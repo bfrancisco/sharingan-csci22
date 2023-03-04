@@ -32,8 +32,6 @@ public class Tomoe extends DrawingObject{
         double cy = tomoe.getBounds2D().getCenterY() - y; // y is height/2
         g2d.translate(-cx, -cy);
         
-        System.out.println(cx);
-        System.out.println(cy);
         // apply translation
         g2d.translate(-tx, -ty);
 

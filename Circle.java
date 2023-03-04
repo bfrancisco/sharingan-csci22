@@ -4,8 +4,8 @@ import java.awt.geom.*;
 public class Circle extends DrawingObject{
     // x and y is the center of the circle
     
-    private double radius;
-    private double scale;
+    protected double radius;
+    protected double scale;
 
     private boolean isGradient;
     private boolean isFill;

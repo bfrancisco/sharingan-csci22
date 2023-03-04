@@ -2,12 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.awt.event.*;
 
 // to do: set up action listeners
 
 public class SceneCanvas extends JComponent {
     private int width;
     private int height;
+    private double centerX;
+    private double centerY;
+    private double eyeRadius;
+    private double boxWidth;
+    private double eyeMoveThreshold;
     ArrayList<DrawingObject> drawingObjects;
     ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
@@ -16,6 +22,15 @@ public class SceneCanvas extends JComponent {
     public SceneCanvas(int w, int h){
         width = w;
         height = h;
+        startCanvas();
+    }
+
+    public void startCanvas(){
+        centerX = width / 2;
+        centerY = height / 2;
+        eyeRadius = height * 0.6185f;
+        eyeMoveThreshold = eyeRadius * 0.06f;
+        boxWidth = Math.min(width, height);
         shapeColor = new ShapeColor();
 
         drawingObjects = new ArrayList<DrawingObject>();
@@ -24,6 +39,8 @@ public class SceneCanvas extends JComponent {
         sharinganList = new ArrayList<DrawingObject>();
         setUpSharingans();
         sharinganIndex = 0;
+
+        setUpListeners();
     }
 
     private void setUpBG(String s1, String s2){
@@ -31,7 +48,35 @@ public class SceneCanvas extends JComponent {
     }
 
     private void setUpSharingans(){
-        sharinganList.add(new TomoeSharingan(width/2, height/2, 1, height * 0.6185f, 0, 0, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
+        sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary")));
+    }
+
+    private void setUpListeners(){
+        MouseMotionListener mouseLoc = new MouseMotionListener() {
+            @Override
+            public void mouseMoved(MouseEvent m){
+                double mx = m.getX();
+                double my = m.getY();
+                
+                // look to the mouse
+                double centerToBoundsX = (centerX - mx > 0) ? Math.min(centerX - mx, boxWidth) : Math.max(centerX - mx, -boxWidth);
+                double centerToBoundsY = (centerX - my > 0) ? Math.min(centerX - my, boxWidth) : Math.max(centerX - my, -boxWidth);
+
+                double translateX;
+                double translateY;
+
+                translateX = centerToBoundsX / eyeMoveThreshold;
+                translateY = centerToBoundsY / eyeMoveThreshold;
+                
+                
+                ((TomoeSharingan) sharinganList.get(sharinganIndex)).getEyeDisplacement(translateX, translateY);
+                repaint();
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {}
+        };
+        this.addMouseMotionListener(mouseLoc);
     }
 
     @Override

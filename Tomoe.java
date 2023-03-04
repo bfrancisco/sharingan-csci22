@@ -28,8 +28,8 @@ public class Tomoe extends DrawingObject{
 
     public void draw(Graphics2D g2d, AffineTransform reset){
         //align to center
-        double cx = tomoe.getBounds2D().getCenterX() - x; // x is width/2
-        double cy = tomoe.getBounds2D().getCenterY() - y; // y is height/2
+        double cx = tomoe.getBounds2D().getCenterX() - x;
+        double cy = tomoe.getBounds2D().getCenterY() - y;
         g2d.translate(-cx, -cy);
         
         // apply translation

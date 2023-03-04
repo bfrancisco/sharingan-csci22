@@ -30,13 +30,13 @@ public class Circle extends DrawingObject{
         circle = new Ellipse2D.Double(this.x-radius*scale/2, this.y-radius*scale/2, radius*scale, radius*scale);
     }
 
-    public Circle(double x, double y, double r, double s, Color g1, Color g2){
+    public Circle(double x, double y, double r, double s, Color g1, Color g2, double tx, double ty){
         super(x, y);
         radius = r;
         scale = s;
         isGradient = true;
         isFill = true;
-        center = new Point2D.Double(x, y);
+        center = new Point2D.Double(x-tx, y-ty);
         fractions = new float[4];
         fractions[0] = 0.0f;
         fractions[1] = 0.35f;

@@ -4,10 +4,11 @@ import java.awt.geom.*;
 public abstract class DrawingObject {
     protected double x;
     protected double y;
-    protected double rotation;
     protected double tx;
     protected double ty;
+    protected double rotation;
     protected double scale;
+    protected boolean canMove;
 
     public DrawingObject(){}
     
@@ -32,12 +33,18 @@ public abstract class DrawingObject {
         this.ty = ty;
     }
 
-    public DrawingObject(double x, double y, double s, double tx, double ty){
+    public DrawingObject(double x, double y, double s){
         this.x = x;
         this.y = y;
         scale = s;
-        this.tx = tx;
-        this.ty = ty;
+    }
+
+    public void translate(double mx, double my){
+        if (canMove){
+            x += mx;
+            y += my;
+        }   
+        
     }
 
     abstract void draw(Graphics2D g2d, AffineTransform reset);

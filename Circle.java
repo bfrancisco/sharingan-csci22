@@ -73,7 +73,7 @@ public class Circle extends DrawingObject{
         
         Ellipse2D circle2 = new Ellipse2D.Double(this.x-radius/2 -(radius * 0.20f), this.y-radius/2 -(radius * 0.20f), radius*scale, radius*scale);
         Area toSubtract = new Area(circle2);
-        Area out = new Area(new Rectangle2D.Double(0, 0, 1024, 768));
+        Area out = new Area(new Rectangle2D.Double(0, 0, x*2, y*2));
         out.subtract(toSubtract);
         g2d.setPaint(gradient);
         g2d.setClip(out);

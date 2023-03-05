@@ -10,7 +10,7 @@ public class SceneStarter {
 
     // instructions
     System.out.println("Use Mouse Wheel to adjust rotation speed.");
-    System.out.println("[SECRET FEATURE] Try to make Sasuke's Mangekyou Sharingan!");
+    // System.out.println("[SECRET FEATURE] Try to make Sasuke's Mangekyou Sharingan!");
   }
 
 }

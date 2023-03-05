@@ -66,11 +66,11 @@ public class Circle extends DrawingObject{
         g2d.setTransform(reset);
     }
 
-    public void clip(Graphics2D g2d, AffineTransform reset){
+    public void clip(Graphics2D g2d, AffineTransform reset, double scaling){
         // reverse setClip. Create Area of whole canvas -> subtract wanted area -> setclip -> voila
         // https://stackoverflow.com/questions/1241253/inside-clipping-with-java-graphics
         
-        Ellipse2D circle2 = new Ellipse2D.Double(this.x-radius/2 -(radius * 0.20f), this.y-radius/2 -(radius * 0.20f), radius*scale, radius*scale);
+        Ellipse2D circle2 = new Ellipse2D.Double(this.x-radius/2 -(radius * 0.20f * (scaling * 0.90)), this.y-radius/2 -(radius * 0.20f * (scaling * 0.90)), radius*scale, radius*scale);
         Area toSubtract = new Area(circle2);
         Area out = new Area(new Rectangle2D.Double(0, 0, x*2, y*2));
         out.subtract(toSubtract);

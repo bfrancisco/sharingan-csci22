@@ -2,12 +2,13 @@
 # Bryan Francisco
 
 # worklow: export SVG from Illustrator -> import to Inkscape -> save as HTML -> copy-paste selected HTML code here as input -> copy-paste to Java
+# made tomoe and sharp-ellipse shapes using this.
 
 # very ugly code. i know.
 
 a = []
 s = input().strip()
-path = "tomoe"
+path = "starOutline" # change this to the Path2D variable name
 while (s != 'e'):
     s = s[4:]
     i = 0
@@ -27,7 +28,9 @@ while (s != 'e'):
         f = "curveTo"
     elif func == "lineTo":
         f = "lineTo"
-
+    elif func == "closePath":
+        a.append(path + ".closePath();")
+        continue
     xy = 0 # x = 0 , y = 1
 
     ret = ''

@@ -11,7 +11,7 @@ public class SpeedGraphic extends DrawingObject{
         super(x, y);
         squares = new Square[5];
         squaresOpacity = new int[5];
-        System.out.printf("%.2f, %.2f\n", x-side, y-side);
+        // System.out.printf("%.2f, %.2f\n", x-side, y-side);
         for (int i = 0; i < 5; i++){
             squares[i] = new Square(x - side*(5-i), y - side, side, new Color(255, 255, 255, 255), x, radius);
             squaresOpacity[i] = 0;

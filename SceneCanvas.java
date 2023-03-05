@@ -95,6 +95,9 @@ public class SceneCanvas extends JComponent {
 		};
         tomoeTimer = new Timer(10, tomoeAnimator);
         tomoeTimer.setRepeats(true);
+        // https://stackoverflow.com/questions/24250717/java-swing-timer-slower-than-expected
+        // Make timer more responsive when many events are queued.
+        tomoeTimer.setCoalesce(false); 
         tomoeTimer.start();
 
         MouseWheelListener wheelListener = new MouseWheelListener(){

@@ -11,6 +11,7 @@ public class TomoeSharingan extends DrawingObject{
     
     private int tomoeSpeed;
     private double radialTolerance;
+    private double moveScaling;
 
     private int[] tomoeRotVals;
     private Circle outerCircle;
@@ -35,6 +36,7 @@ public class TomoeSharingan extends DrawingObject{
         tomoeRotVals[1] = tomoeSpeed;
         tomoeRotVals[2] = tomoeSpeed;
         radialTolerance = 0.14f;
+        moveScaling = 1.0f;
         
         generateComponents();
     }
@@ -45,10 +47,11 @@ public class TomoeSharingan extends DrawingObject{
         innerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, primary, primaryDark, tx, ty);
         outlineCircle = new Circle(x-tx, y-ty, radius * 0.54f, scale, tomoeC, false);
         radialLine = new RadialLine(x-tx*1.7, y-ty*1.7, radius*radialTolerance);
-        pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f, scale, tomoeC, true);
+        pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f * moveScaling, scale, tomoeC, true);
         tomoe = new Tomoe[3];
         for (int i = 0; i < 3; i++)
-            tomoe[i] = new Tomoe(x-tx, y-ty, radius/475.0f, tomoeC, (double)(i * 120.0f - ((double) tomoeRotVals[i] / 2)), 0, radius*0.29f); // 0.29f on PC
+            tomoe[i] = new Tomoe(x-tx, y-ty, 1, tomoeC, (double)(i * 120.0f - ((double) tomoeRotVals[i] / 2)), 0, radius*0.29f); // 0.29f on PC
+    
         highlight = new Ellipse(x-tx*0.4, y-ty*0.4, radius * 0.46f, radius * 0.31f, new Color(255, 255, 255, 30), new Color(255, 255, 255), 0, radius*0.20f*1.35f, radius);
         shadowCircleClip = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, new Color(0, 0, 0, 30), new Color(0, 0, 0, 95), tx, ty);
         
@@ -57,6 +60,10 @@ public class TomoeSharingan extends DrawingObject{
     public void setEyeDisplacement(double ex, double ey){
         tx = ex;
         ty = ey;
+    }
+
+    public void setMoveScaling(double scaling){
+        moveScaling = scaling;
     }
 
     public void animateTomoe(){

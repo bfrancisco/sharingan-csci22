@@ -67,16 +67,18 @@ public class SceneCanvas extends JComponent {
                 
                 // look to the mouse
                 double centerToBoundsX = (centerX - mx > 0) ? Math.min(centerX - mx, boxWidth) : Math.max(centerX - mx, -boxWidth);
-                double centerToBoundsY = (centerX - my > 0) ? Math.min(centerX - my, boxWidth) : Math.max(centerX - my, -boxWidth);
+                double centerToBoundsY = (centerY - my > 0) ? Math.min(centerY - my, boxWidth) : Math.max(centerY - my, -boxWidth);
 
-                double translateX;
-                double translateY;
-
-                translateX = centerToBoundsX / eyeMoveThreshold;
-                translateY = centerToBoundsY / eyeMoveThreshold;
+                double translateX = centerToBoundsX / eyeMoveThreshold;
+                double translateY = centerToBoundsY / eyeMoveThreshold;
+                double hypotenuse = Math.sqrt(translateX*translateX + translateY*translateY);
+                // hypotenuse ranges from 0 to ~25. ~11.5 is approx. midpoint
+                double hypoScaling = 1.0f - (0.012f * (hypotenuse-11.5));
                 
+
                 
                 ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
+                ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
                 repaint();
             }
 

@@ -8,11 +8,8 @@ public class TomoeSharingan extends DrawingObject{
     Color primaryDark;
     private double tx;
     private double ty;
-    protected boolean canMove = true;
     
     private int tomoeSpeed;
-    // to do
-    private double radialLength;
     private double radialTolerance;
 
     private int[] tomoeRotVals;
@@ -37,6 +34,7 @@ public class TomoeSharingan extends DrawingObject{
         tomoeRotVals[0] = tomoeSpeed;
         tomoeRotVals[1] = tomoeSpeed;
         tomoeRotVals[2] = tomoeSpeed;
+        radialTolerance = 0.14f;
         
         generateComponents();
     }
@@ -46,7 +44,7 @@ public class TomoeSharingan extends DrawingObject{
         outerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius, scale, tomoeC, true);
         innerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, primary, primaryDark, tx, ty);
         outlineCircle = new Circle(x-tx, y-ty, radius * 0.54f, scale, tomoeC, false);
-        radialLine = new RadialLine(x-tx*1.7, y-ty*1.7, radius*0.10);
+        radialLine = new RadialLine(x-tx*1.7, y-ty*1.7, radius*radialTolerance);
         pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f, scale, tomoeC, true);
         tomoe = new Tomoe[3];
         for (int i = 0; i < 3; i++)
@@ -56,15 +54,9 @@ public class TomoeSharingan extends DrawingObject{
         
     }
 
-    public void getEyeDisplacement(double ex, double ey){
-        if (canMove){
-            tx = ex;
-            ty = ey;
-        }
-        else{
-            tx = 0;
-            ty = 0;
-        }
+    public void setEyeDisplacement(double ex, double ey){
+        tx = ex;
+        ty = ey;
     }
 
     public void animateTomoe(){
@@ -75,6 +67,7 @@ public class TomoeSharingan extends DrawingObject{
 
     public void setRotationSpeed(int val){
         tomoeSpeed = val;
+        radialTolerance = 0.1f + (0.02*val);
     }
 
     public void draw(Graphics2D g2d, AffineTransform reset){

@@ -76,7 +76,7 @@ public class SceneCanvas extends JComponent {
                 translateY = centerToBoundsY / eyeMoveThreshold;
                 
                 
-                ((TomoeSharingan) sharinganList.get(sharinganIndex)).getEyeDisplacement(translateX, translateY);
+                ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
                 repaint();
             }
 

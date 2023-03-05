@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.awt.event.*;
-// import java.io.File;
-import javax.sound.sampled.*;
 import java.net.URL;
+// import java.io.*;
+import javax.sound.sampled.*;
 
 public class SceneCanvas extends JComponent {
     private int width;
@@ -51,14 +51,12 @@ public class SceneCanvas extends JComponent {
         sharinganIndex = 0;
 
         setUpListeners();
-
-        setUpSounds();
     }
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
         drawingObjects.add(new SpeedGraphic(width*0.98, height*0.985, eyeRadius*0.045, eyeRadius));
-        playSound(sasukeBGM, false);
+        playBGM();
     }
 
     private void setUpSharingans(){
@@ -112,37 +110,48 @@ public class SceneCanvas extends JComponent {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = -(e.getWheelRotation());
                 if (rotationSpeed + notches > 0 && rotationSpeed + notches <= 10){
+                    if (rotationSpeed + notches == 10){
+                        playSFX();
+                    }
                     rotationSpeed += notches;
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
                     ((SpeedGraphic) drawingObjects.get(1)).setSpeed(rotationSpeed);
                     repaint();
                 }
-                if (rotationSpeed == 10){
-                    playSound(sharinganSFX, false);
-                }
+                
             }
         };
         this.addMouseWheelListener(wheelListener);
     }
 
-    public void playSound(String sound, boolean loop){
+    public void playBGM() {
         try{
-            URL url = this.getClass().getClassLoader().getResource(sound);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
+            // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
+            URL aud = this.getClass().getClassLoader().getResource("sasukebgm.wav");
+			AudioInputStream in = AudioSystem.getAudioInputStream(aud);
+			Clip clip = AudioSystem.getClip();
+			clip.open(in);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
         }
         catch(Exception e){
-            System.out.println("Error playing sound.");
-            System.out.println(sound);
+            System.out.println("Error playing BGM.");
         }
     }
 
-    public void setUpSounds(){
-        sharinganSFX = "sharingansfx.wav";
-        sasukeBGM = "sasukebgm.wav";
+    public void playSFX() {
+        try{
+            // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
+            URL aud2 = this.getClass().getClassLoader().getResource("sharingansfx.wav");
+            Clip clip2 = AudioSystem.getClip();
+            AudioInputStream in2 = AudioSystem.getAudioInputStream(aud2);
+			clip2.open(in2);
+            clip2.loop(0);
+        }
+        catch(Exception e){
+            System.out.println("Error playing SFX.");
+        }
     }
+
     @Override
     protected void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D)g;

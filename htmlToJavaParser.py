@@ -8,7 +8,7 @@
 
 a = []
 s = input().strip()
-path = "starOutline" # change this to the Path2D variable name
+path = "tomoe" # change this to the Path2D variable name
 while (s != 'e'):
     s = s[4:]
     i = 0

@@ -3,8 +3,9 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.awt.event.*;
-
-// to do: set up action listeners
+// import java.io.File;
+import javax.sound.sampled.*;
+import java.net.URL;
 
 public class SceneCanvas extends JComponent {
     private int width;
@@ -22,6 +23,9 @@ public class SceneCanvas extends JComponent {
     ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
     ShapeColor shapeColor;
+
+    String sharinganSFX;
+    String sasukeBGM;
 
     public SceneCanvas(int w, int h){
         width = w;
@@ -47,11 +51,14 @@ public class SceneCanvas extends JComponent {
         sharinganIndex = 0;
 
         setUpListeners();
+
+        setUpSounds();
     }
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
         drawingObjects.add(new SpeedGraphic(width*0.98, height*0.985, eyeRadius*0.045, eyeRadius));
+        playSound(sasukeBGM, false);
     }
 
     private void setUpSharingans(){
@@ -74,8 +81,6 @@ public class SceneCanvas extends JComponent {
                 double hypotenuse = Math.sqrt(translateX*translateX + translateY*translateY);
                 // hypotenuse ranges from 0 to ~25. ~11.5 is approx. midpoint
                 double hypoScaling = 1.0f - (0.012f * (hypotenuse-11.5));
-                
-
                 
                 ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
                 ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
@@ -112,11 +117,32 @@ public class SceneCanvas extends JComponent {
                     ((SpeedGraphic) drawingObjects.get(1)).setSpeed(rotationSpeed);
                     repaint();
                 }
+                if (rotationSpeed == 10){
+                    playSound(sharinganSFX, false);
+                }
             }
         };
         this.addMouseWheelListener(wheelListener);
     }
 
+    public void playSound(String sound, boolean loop){
+        try{
+            URL url = this.getClass().getClassLoader().getResource(sound);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        }
+        catch(Exception e){
+            System.out.println("Error playing sound.");
+            System.out.println(sound);
+        }
+    }
+
+    public void setUpSounds(){
+        sharinganSFX = "sharingansfx.wav";
+        sasukeBGM = "sasukebgm.wav";
+    }
     @Override
     protected void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D)g;

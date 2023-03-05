@@ -5,9 +5,10 @@ import javax.swing.*;
 public class Try extends JPanel {
     double width = 1024;
     double height = 768;
-    Rectangle2D rectangle;
+    // Rectangle2D rectangle;
+    Mangekyo mangekyo;
     public Try() {
-        
+        mangekyo = new Mangekyo(width/2, height/2, 616.0f/2, 0, height);
     }
 
     public void paint(Graphics g) {
@@ -16,7 +17,8 @@ public class Try extends JPanel {
         AffineTransform reset = new AffineTransform();
         
         // paint/draw/fill here
-        g2d.fill(rectangle);
+        // g2d.fill(rectangle);
+        mangekyo.draw(g2d, reset);
     }
 
     public static void main(String[] args) {

@@ -48,7 +48,7 @@ public class SceneCanvas extends JComponent {
         
         sharinganList = new ArrayList<DrawingObject>();
         setUpSharingans();
-        sharinganIndex = 0;
+        sharinganIndex = 1;
 
         setUpListeners();
     }
@@ -61,6 +61,7 @@ public class SceneCanvas extends JComponent {
 
     private void setUpSharingans(){
         sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed));
+        sharinganList.add(new MangekyoSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed));
     }
 
     private void setUpListeners(){
@@ -80,8 +81,11 @@ public class SceneCanvas extends JComponent {
                 // hypotenuse ranges from 0 to ~25. ~11.5 is approx. midpoint
                 double hypoScaling = 1.0f - (0.012f * (hypotenuse-11.5));
                 
-                ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
-                ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
+                if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
+                    ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
+                    ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
+                }
+                
                 repaint();
             }
 
@@ -94,7 +98,9 @@ public class SceneCanvas extends JComponent {
 			@Override
 			public void actionPerformed(ActionEvent ae)
 			{
-				((TomoeSharingan) sharinganList.get(sharinganIndex)).animateTomoe();
+				if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
+                    ((TomoeSharingan) sharinganList.get(sharinganIndex)).animateTomoe();
+                }
                 repaint();
 			}
 		};
@@ -114,7 +120,10 @@ public class SceneCanvas extends JComponent {
                         playSFX();
                     }
                     rotationSpeed += notches;
-                    ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
+                    if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
+                        ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
+                    }
+ 
                     ((SpeedGraphic) drawingObjects.get(1)).setSpeed(rotationSpeed);
                     repaint();
                 }
@@ -127,6 +136,7 @@ public class SceneCanvas extends JComponent {
     public void playBGM() {
         try{
             // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
+            // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexception
             URL aud = this.getClass().getClassLoader().getResource("sasukebgm.wav");
 			AudioInputStream in = AudioSystem.getAudioInputStream(aud);
 			Clip clip = AudioSystem.getClip();
@@ -141,6 +151,7 @@ public class SceneCanvas extends JComponent {
     public void playSFX() {
         try{
             // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
+            // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexception
             URL aud2 = this.getClass().getClassLoader().getResource("sharingansfx.wav");
             Clip clip2 = AudioSystem.getClip();
             AudioInputStream in2 = AudioSystem.getAudioInputStream(aud2);

@@ -50,6 +50,15 @@ public class Circle extends DrawingObject{
         circle = new Ellipse2D.Double(this.x-radius*scale/2, this.y-radius*scale/2, radius*scale, radius*scale);
     }
 
+    public Circle(double x, double y, double radius){
+        super(x, y);
+        circle = new Ellipse2D.Double(this.x-radius/2, this.y-radius/2, radius, radius);
+    }
+
+    public Ellipse2D.Double getCircle(){
+        return circle;
+    }
+
     public void draw(Graphics2D g2d, AffineTransform reset){
         if (!isGradient)
             g2d.setPaint(solidColor);
@@ -63,6 +72,12 @@ public class Circle extends DrawingObject{
             g2d.draw(circle);
         }
 
+        g2d.setTransform(reset);
+    }
+
+    public void drawMangekyo(Graphics2D g2d, AffineTransform reset, Color c){
+        g2d.setPaint(c);
+        g2d.draw(circle);
         g2d.setTransform(reset);
     }
 

@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class SceneFrame {
+    // https://stackoverflow.com/questions/11570356/jframe-in-full-screen-java
     static GraphicsDevice device = GraphicsEnvironment
     .getLocalGraphicsEnvironment().getScreenDevices()[0];
     private JFrame frame;

@@ -1,10 +1,10 @@
-# html to Java 2DPath
+# html to Java 2DPath Parser
 # Bryan Francisco
 
 # worklow: export SVG from Illustrator -> import to Inkscape -> save as HTML -> copy-paste selected HTML code here as input -> copy-paste to Java
 # made tomoe and sharp-ellipse shapes using this.
 
-# very ugly code. i know.
+# very ugly code, my bad
 
 a = []
 s = input().strip()

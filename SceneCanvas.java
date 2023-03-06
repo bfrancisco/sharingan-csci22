@@ -86,11 +86,24 @@ public class SceneCanvas extends JComponent {
                 // hypotenuse ranges from 0 to ~25. ~11.5 is approx. midpoint
                 double hypoScaling = 1.0f - (0.012f * (hypotenuse-11.5));
                 
+                double dX = centerX - m.getX();
+                double dY = centerY - m.getY();
+                double pupilRadius = eyeRadius * 0.12f;
+                boolean atPupil = (Math.sqrt(dX*dX + dY*dY) <= pupilRadius);
+
                 if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
+                    if (atPupil && rotationSpeed == 10)
+                        setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    else
+                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
                 }
                 else if (sharinganList.get(sharinganIndex) instanceof MangekyoSharingan){
+                    if (atPupil && rotationSpeed == 1)
+                        setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    else
+                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                     ((MangekyoSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
                     ((MangekyoSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
                 }
@@ -184,6 +197,7 @@ public class SceneCanvas extends JComponent {
                 double dY = centerY - e.getY();
                 double pupilRadius = eyeRadius * 0.12f;
                 boolean atPupil = (Math.sqrt(dX*dX + dY*dY) <= pupilRadius);
+
                 if (e.getButton() == MouseEvent.BUTTON1 && atPupil){
                     if ((sharinganList.get(sharinganIndex) instanceof TomoeSharingan) && rotationSpeed == 10){
                         transitionTimer.start();

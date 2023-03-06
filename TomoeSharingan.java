@@ -37,7 +37,6 @@ public class TomoeSharingan extends DrawingObject{
         tomoeRotVals[2] = tomoeSpeed;
         radialTolerance = 0.14f;
         moveScaling = 1.0f;
-        setRotationSpeed(10);
         generateComponents();
     }
 

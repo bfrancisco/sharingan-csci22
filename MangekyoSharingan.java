@@ -7,41 +7,40 @@ public class MangekyoSharingan extends DrawingObject{
     Color primaryDark;
     private double tx;
     private double ty;
+    private double boxW;
 
-    private int ovalSpeed;
+    private int mangekyoSpeed;
+    private int mangekyoRotVal;
     private double radialTolerance;
     private double moveScaling;
 
-    private int[] ovalRotVals;
-    private int starRotVal;
     private Circle outerCircle;
     private Circle innerCircle;
+    private Mangekyo mangekyo;
     private RadialLine radialLine;
-    
     private Circle pupil;
     private Ellipse highlight;
     private Circle shadowCircleClip;
 
-    public MangekyoSharingan(double x, double y, double scale, double radius, Color primary, Color primaryDark, int tspeed){
+    public MangekyoSharingan(double x, double y, double scale, double radius, Color primary, Color primaryDark, int tspeed, double boxW){
         // (x, y) is at center.
         super(x, y, scale);
         this.radius = radius;
         this.primary = primary;
         this.primaryDark = primaryDark;
-        ovalRotVals = new int[3];
-        ovalSpeed = tspeed;
-        ovalRotVals[0] = ovalSpeed;
-        ovalRotVals[1] = ovalSpeed;
-        ovalRotVals[2] = ovalSpeed;
+        this.boxW = boxW;
+        mangekyoSpeed = tspeed;
+        mangekyoRotVal = mangekyoSpeed;
         radialTolerance = 0.14f;
         moveScaling = 1.0f;
-
+        setRotationSpeed(10);
         generateComponents();
     }
 
     public void generateComponents(){
         outerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.97f, scale, new Color(0, 0, 0, 200), true);
         innerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, primary, primaryDark, tx, ty);
+        mangekyo = new Mangekyo(x-tx*1.1, y-ty*1.1, (radius * 1.345f / 2), mangekyoRotVal, boxW, new Area(innerCircle.getCircle()));
         radialLine = new RadialLine(x-tx*1.7, y-ty*1.7, radius*radialTolerance);
         pupil = new Circle(x-tx*1.7, y-ty*1.7, radius * 0.20f * moveScaling, scale, Color.black, true);
     
@@ -54,14 +53,24 @@ public class MangekyoSharingan extends DrawingObject{
         ty = ey;
     }
 
+    public void animateMangekyo(){
+        mangekyoRotVal = (mangekyoRotVal + mangekyoSpeed) % 720;
+    }
+
     public void setMoveScaling(double scaling){
         moveScaling = scaling;
+    }
+
+    public void setRotationSpeed(int val){
+        mangekyoSpeed = val;
+        radialTolerance = 0.1f + (0.02*val);
     }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
         generateComponents();
         outerCircle.draw(g2d, reset);
         innerCircle.draw(g2d, reset);
+        mangekyo.draw(g2d, reset);
         radialLine.draw(g2d, reset);
         pupil.draw(g2d, reset);
         highlight.draw(g2d, reset);

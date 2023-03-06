@@ -37,12 +37,13 @@ public class TomoeSharingan extends DrawingObject{
         tomoeRotVals[2] = tomoeSpeed;
         radialTolerance = 0.14f;
         moveScaling = 1.0f;
-
+        setRotationSpeed(10);
         generateComponents();
     }
 
     public void generateComponents(){
         // System.out.printf("%.2f , %.2f\n", tx, ty);
+        
         outerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.97f, scale, new Color(0, 0, 0, 200), true);
         innerCircle = new Circle(x-tx*0.35, y-ty*0.35, radius * 0.95f, scale, primary, primaryDark, tx, ty);
         outlineCircle = new Circle(x-tx, y-ty, radius * 0.54f * (moveScaling * 0.90), scale, tomoeC, false);
@@ -78,7 +79,9 @@ public class TomoeSharingan extends DrawingObject{
     }
 
     public void draw(Graphics2D g2d, AffineTransform reset){
+        
         generateComponents();
+        
         outerCircle.draw(g2d, reset);
         innerCircle.draw(g2d, reset);
         outlineCircle.draw(g2d, reset);

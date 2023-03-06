@@ -76,8 +76,22 @@ public class Circle extends DrawingObject{
     }
 
     public void drawMangekyo(Graphics2D g2d, AffineTransform reset, Color c){
+        // for testing purposes
         g2d.setPaint(c);
         g2d.draw(circle);
+        g2d.setTransform(reset);
+    }
+
+    public void fillMangekyo(Graphics2D g2d, AffineTransform reset, Color c){
+        // for testing purposes
+        g2d.setPaint(c);
+        g2d.fill(circle);
+        g2d.setTransform(reset);
+    }
+
+    public void clipMangekyo(Graphics2D g2d, AffineTransform reset, Color c){
+        // for testing purposes
+        g2d.setClip(circle);
         g2d.setTransform(reset);
     }
 

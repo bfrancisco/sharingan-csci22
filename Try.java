@@ -7,8 +7,10 @@ public class Try extends JPanel {
     double height = 768;
     // Rectangle2D rectangle;
     Mangekyo mangekyo;
+    Circle circle;
     public Try() {
-        mangekyo = new Mangekyo(width/2, height/2, 616.0f/2, 0, height);
+        circle = new Circle(width/2, height/2, 464.35f);
+        mangekyo = new Mangekyo(width/2, height/2, 616.0f/2, 20, height, new Area(circle.getCircle()));
     }
 
     public void paint(Graphics g) {

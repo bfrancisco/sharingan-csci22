@@ -4,7 +4,6 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 import java.net.URL;
-// import java.io.*;
 import javax.sound.sampled.*;
 
 public class SceneCanvas extends JComponent {
@@ -12,20 +11,24 @@ public class SceneCanvas extends JComponent {
     private int height;
     private double centerX;
     private double centerY;
-    private double eyeRadius; 
+    private double eyeRadius;
     private double boxWidth;
     private double eyeMoveThreshold;
 
     private int rotationSpeed;
-    private Timer tomoeTimer;
+    private Timer rotationTimer;
+    private Timer transitionTimer;
 
     ArrayList<DrawingObject> drawingObjects;
     ArrayList<DrawingObject> sharinganList;
     private int sharinganIndex;
+    private int sharinganCount;
     ShapeColor shapeColor;
 
-    String sharinganSFX;
-    String sasukeBGM;
+    URL aud = this.getClass().getClassLoader().getResource("sasukebgm.wav");
+    URL aud2 = this.getClass().getClassLoader().getResource("sharingansfx.wav");
+    URL aud3 = this.getClass().getClassLoader().getResource("mangekyosfx-start.wav");
+    URL aud4 = this.getClass().getClassLoader().getResource("mangekyosfx-end.wav");
 
     public SceneCanvas(int w, int h){
         width = w;
@@ -42,26 +45,28 @@ public class SceneCanvas extends JComponent {
         boxWidth = Math.min(width, height);
         shapeColor = new ShapeColor();
         rotationSpeed = 1;
+        sharinganCount = 2;
 
         drawingObjects = new ArrayList<DrawingObject>();
         setUpBG("Primary", "Secondary");
         
         sharinganList = new ArrayList<DrawingObject>();
         setUpSharingans();
-        sharinganIndex = 1;
+        sharinganIndex = 0;
 
         setUpListeners();
+
     }
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
         drawingObjects.add(new SpeedGraphic(width*0.98, height*0.985, eyeRadius*0.045, eyeRadius));
-        playBGM();
+        playSound(aud, true);
     }
 
     private void setUpSharingans(){
         sharinganList.add(new TomoeSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Tomoe"), shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed));
-        sharinganList.add(new MangekyoSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed));
+        sharinganList.add(new MangekyoSharingan(centerX, centerY, 1, eyeRadius, shapeColor.genColor("Primary"), shapeColor.genColor("Secondary"), rotationSpeed, boxWidth));
     }
 
     private void setUpListeners(){
@@ -85,6 +90,10 @@ public class SceneCanvas extends JComponent {
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
                 }
+                else if (sharinganList.get(sharinganIndex) instanceof MangekyoSharingan){
+                    ((MangekyoSharingan) sharinganList.get(sharinganIndex)).setEyeDisplacement(translateX, translateY);
+                    ((MangekyoSharingan) sharinganList.get(sharinganIndex)).setMoveScaling(hypoScaling);
+                }
                 
                 repaint();
             }
@@ -94,34 +103,36 @@ public class SceneCanvas extends JComponent {
         };
         this.addMouseMotionListener(mouseLoc);
 
-        ActionListener tomoeAnimator = new ActionListener(){
+        ActionListener rotationAnimator = new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent ae)
-			{
+			public void actionPerformed(ActionEvent ae){
 				if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
                     ((TomoeSharingan) sharinganList.get(sharinganIndex)).animateTomoe();
+                }
+                else if (sharinganList.get(sharinganIndex) instanceof MangekyoSharingan){
+                    ((MangekyoSharingan) sharinganList.get(sharinganIndex)).animateMangekyo();
                 }
                 repaint();
 			}
 		};
-        tomoeTimer = new Timer(10, tomoeAnimator);
-        tomoeTimer.setRepeats(true);
-        // https://stackoverflow.com/questions/24250717/java-swing-timer-slower-than-expected
-        // Make timer more responsive when many events are queued.
-        tomoeTimer.setCoalesce(false); 
-        tomoeTimer.start();
+        rotationTimer = new Timer(10, rotationAnimator);
+        rotationTimer.setRepeats(true);
+        rotationTimer.start();
 
         MouseWheelListener wheelListener = new MouseWheelListener(){
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = -(e.getWheelRotation());
                 if (rotationSpeed + notches > 0 && rotationSpeed + notches <= 10){
-                    if (rotationSpeed + notches == 10){
-                        playSFX();
+                    if ((sharinganList.get(sharinganIndex) instanceof TomoeSharingan) && rotationSpeed + notches == 10){
+                        playSound(aud2, false);
                     }
                     rotationSpeed += notches;
                     if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){
                         ((TomoeSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
+                    }
+                    else if (sharinganList.get(sharinganIndex) instanceof MangekyoSharingan){
+                        ((MangekyoSharingan) sharinganList.get(sharinganIndex)).setRotationSpeed(rotationSpeed);
                     }
  
                     ((SpeedGraphic) drawingObjects.get(1)).setSpeed(rotationSpeed);
@@ -131,36 +142,89 @@ public class SceneCanvas extends JComponent {
             }
         };
         this.addMouseWheelListener(wheelListener);
+        
+        ActionListener transitionAnimator = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae){
+                if (sharinganList.get(sharinganIndex) instanceof TomoeSharingan){    
+                    try{
+                        AudioInputStream in = AudioSystem.getAudioInputStream(aud3);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(in);
+                        clip.loop(0);
+                        
+                        while(clip.getMicrosecondLength() != clip.getMicrosecondPosition()){}
+        
+                    }
+                    catch(Exception e){
+                        System.out.println("Error playing music.");
+                    }
+                    playSound(aud4, false);
+                }
+                else{
+                    playSound(aud2, false);
+                }
+
+                nextSharingan();
+                
+            }
+        };
+        transitionTimer = new Timer(10, transitionAnimator);
+        transitionTimer.setRepeats(false);
+
+        MouseListener mouseLis = new MouseListener() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                double dX = centerX - e.getX();
+                double dY = centerY - e.getY();
+                double pupilRadius = eyeRadius * 0.12f;
+                boolean atPupil = (Math.sqrt(dX*dX + dY*dY) <= pupilRadius);
+                if (e.getButton() == MouseEvent.BUTTON1 && atPupil){
+                    if ((sharinganList.get(sharinganIndex) instanceof TomoeSharingan) && rotationSpeed == 10){
+                        transitionTimer.start();
+                    }
+                    
+                    else if ((sharinganList.get(sharinganIndex) instanceof MangekyoSharingan) && rotationSpeed == 1){
+                        ((TomoeSharingan) sharinganList.get(0)).setRotationSpeed(1);
+                        transitionTimer.start();
+                        ((MangekyoSharingan) sharinganList.get(1)).setRotationSpeed(10);
+                    }
+                }
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}  
+        };
+        this.addMouseListener(mouseLis);
+
     }
 
-    public void playBGM() {
+    // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexceptio
+    public void playSound(URL aud, boolean loop) {
         try{
-            // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
-            // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexception
-            URL aud = this.getClass().getClassLoader().getResource("sasukebgm.wav");
 			AudioInputStream in = AudioSystem.getAudioInputStream(aud);
 			Clip clip = AudioSystem.getClip();
 			clip.open(in);
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
+            if (loop)
+			    clip.loop(Clip.LOOP_CONTINUOUSLY);
+            else
+                clip.loop(0);
         }
         catch(Exception e){
-            System.out.println("Error playing BGM.");
+            System.out.println("Error playing music.");
         }
     }
 
-    public void playSFX() {
-        try{
-            // ONLY WORKS IF STRING IS DIRECTLY PASSED TO METHOD !!!
-            // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexception
-            URL aud2 = this.getClass().getClassLoader().getResource("sharingansfx.wav");
-            Clip clip2 = AudioSystem.getClip();
-            AudioInputStream in2 = AudioSystem.getAudioInputStream(aud2);
-			clip2.open(in2);
-            clip2.loop(0);
-        }
-        catch(Exception e){
-            System.out.println("Error playing SFX.");
-        }
+    public void nextSharingan(){
+        sharinganIndex = (sharinganIndex + 1) % sharinganCount;
     }
 
     @Override
@@ -170,7 +234,7 @@ public class SceneCanvas extends JComponent {
         g2d.setRenderingHints(rh);
         AffineTransform af = g2d.getTransform();
 
-        // draw all drawing objects
+        // draw all drawing objects except the sharingan
         for (DrawingObject obj : drawingObjects){
             obj.draw(g2d, af);
         }

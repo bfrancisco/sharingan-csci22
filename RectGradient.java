@@ -9,6 +9,7 @@ public class RectGradient extends DrawingObject{
     float[] fractions;
     Color[] colors;
     RadialGradientPaint gradient;
+
     public RectGradient(double x, double y, double w, double h, float d1, float d2, Color c1, Color c2){
         super(x, y);
         width = w;
@@ -23,6 +24,8 @@ public class RectGradient extends DrawingObject{
         colors[1] = c2;
         gradient = new RadialGradientPaint(center, (float) (height/2), fractions, colors);
     }
+
+
     public void draw(Graphics2D g2d, AffineTransform reset){
         g2d.setPaint(gradient);
         g2d.fill(rect);

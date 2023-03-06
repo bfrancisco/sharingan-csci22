@@ -60,7 +60,7 @@ public class SceneCanvas extends JComponent {
 
     private void setUpBG(String s1, String s2){
         drawingObjects.add(new RectGradient(0, 0, width, height, 0.41f, 1.0f, shapeColor.genColor(s1), shapeColor.genColor(s2)));
-        drawingObjects.add(new SpeedGraphic(width*0.98, height*0.985, eyeRadius*0.045, eyeRadius));
+        drawingObjects.add(new SpeedGraphic(width*0.98, 0, eyeRadius*0.045, eyeRadius));
         playSound(aud, true);
     }
 
@@ -218,7 +218,7 @@ public class SceneCanvas extends JComponent {
             public void mouseExited(MouseEvent e) {}  
         };
         this.addMouseListener(mouseLis);
-
+        
     }
 
     // https://stackoverflow.com/questions/66443421/audiosystem-successfully-plays-clip-but-only-once-lineunavailableexceptio
